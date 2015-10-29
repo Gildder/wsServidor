@@ -1,0 +1,5 @@
+c:\users\gildder\documents\visual studio 2012\Projects\wsServidor\wsServidor\bin\wsServidor.dll
+c:\users\gildder\documents\visual studio 2012\Projects\wsServidor\wsServidor\bin\wsServidor.pdb
+c:\users\gildder\documents\visual studio 2012\Projects\wsServidor\wsServidor\obj\Debug\wsServidor.dll
+c:\users\gildder\documents\visual studio 2012\Projects\wsServidor\wsServidor\obj\Debug\wsServidor.pdb
+C:\Users\gildder\documents\visual studio 2012\Projects\wsServidor\wsServidor\obj\Debug\wsServidor.csprojResolveAssemblyReference.cache
