@@ -6,20 +6,23 @@ using MySql.Data;
 using MySql.Data.MySqlClient;
 using System.Data;
 
-
 namespace wsServidor.Helper
 {
     public class ConexionMySql
     {
-        //atributo de singleton
-        private static ConexionMySql conexionMySql;
+        /// <summary>
+        /// Atributo singleton
+        /// </summary>
+        private static ConexionMySql instance;
 
-        //atributo de conexion
-        private MySqlConnection connection;
-        private MySqlCommand command;
+
+        private MySqlConnection connection;    
+        private MySqlCommand command;    
         private MySqlDataAdapter dataAdapter;
+        private MySqlDataReader dataReader;
         private MySqlCommandBuilder commandBuilder;
-        private DataSet dataSet;
+        public DataSet dataSet;
+
         private string cadenaConexion = "server="+ Util.SERVIDOR_DB  + 
                                 ";user = " + Util.USUARIO_DB + 
                                 ";database=" + Util.BASEDATOS +
@@ -41,12 +44,12 @@ namespace wsServidor.Helper
         /// <returns></returns>
         public static ConexionMySql getInstance()
         {
-            if(conexionMySql == null)
+            if(instance == null)
             {
-                conexionMySql = new ConexionMySql();
+                instance = new ConexionMySql();
             }
 
-            return conexionMySql;
+            return instance;
         }
 
         #endregion
@@ -76,10 +79,11 @@ namespace wsServidor.Helper
         {
            
             string sql = "INSERT INTO " + tabla + "VALUES (" + values + ")";
+            
             connection.Open();
-
             command = new MySqlCommand(sql, connection);
             int resultado = command.ExecuteNonQuery();
+            connection.Close();
 
             if(resultado > 0)
                 return true;
@@ -97,9 +101,9 @@ namespace wsServidor.Helper
         /// <returns></returns>
         public bool Eliminar(string tabla, string condicion)
         {
-            
-            connection.Open();
             string sql = "DELETE FROM " + tabla + " WHERE " + condicion;
+
+            connection.Open();
             command = new MySqlCommand(sql, connection);
             int resultado = command.ExecuteNonQuery();
             connection.Close();
@@ -121,9 +125,9 @@ namespace wsServidor.Helper
         /// <returns></returns>
         public bool Actualizar(string tabla, string campos, string condicion)
         {
-            
-            connection.Open();
             string sql = "UPDATE " + tabla + " SET " + campos + " WHERE " + condicion;
+
+            connection.Open();
             command = new MySqlCommand(sql, connection);
             int resultado = command.ExecuteNonQuery();
             connection.Close();
@@ -140,9 +144,11 @@ namespace wsServidor.Helper
         /// <param name="sql">Consulta que se desea reaalizar</param>
         /// <param name="tabla">Tabla de la consulta</param>
         /// <returns></returns>
-        public object ConsultarGenerica(string sql, string tabla)
+        public DataTable ConsultarGenerica(string sql, string tabla)
         {
+            //comando de conexion para rellenar un DataSet
             dataAdapter = new MySqlDataAdapter(sql, connection);
+           //Concilia los dato obtennidos por dataAdapter
             commandBuilder = new MySqlCommandBuilder(dataAdapter);
 
             dataSet = new DataSet();
@@ -159,7 +165,7 @@ namespace wsServidor.Helper
         /// </summary>
         /// <param name="tabla">Nombre de la tabla</param>
         /// <returns></returns>
-        public object ConsultarTabla(string tabla)
+        public DataTable ConsultarTabla(string tabla)
         {
             
             string sql = "SELECT * FROM " + tabla;
@@ -179,7 +185,7 @@ namespace wsServidor.Helper
         /// <param name="campos">Campos de interes</param>
         /// <param name="tabla">Nombre de la tabla</param>
         /// <returns></returns>
-        public object ConsultarTabla(string campos, string tabla)
+        public DataTable ConsultarTabla(string campos, string tabla)
         {
             
             string sql = "SELECT " + campos + " FROM " + tabla;
@@ -201,7 +207,7 @@ namespace wsServidor.Helper
         /// <param name="tabla">Nombre de la tabla</param>
         /// <param name="condicion">Condicion de la consulta</param>
         /// <returns></returns>
-        public object ConsultarTabla(string campos, string tabla, string condicion)
+        public DataTable ConsultarTabla(string campos, string tabla, string condicion)
         {
            
             string sql = "SELECT " + campos + " FROM " + tabla + " WHERE " + condicion;
@@ -216,8 +222,12 @@ namespace wsServidor.Helper
         }
 
 
+       
+
         #endregion
 
+
+        
     }//fin clase
 
 }

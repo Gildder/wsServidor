@@ -8,6 +8,8 @@ using System.Web.Script.Serialization;
 using System.Web.Services;
 using wsServidor.Helper;
 using wsServidor.Models;
+using System.Security.Cryptography;
+using System.Text;
 #endregion
 
 namespace wsServidor
@@ -35,16 +37,31 @@ namespace wsServidor
             return 4;
         }
 
-
+        /// <summary>
+        /// Este metodo valida usuario ayudante y retorna la lista de inventario
+        /// </summary>
+        /// <param name="usuario"></param>
+        /// <param name="contrasenia"></param>
+        /// <returns></returns>
         [WebMethod]
         public bool ValidarUsuario(String usuario, String contrasenia)
         {
-            ConexionMySql cn = new ConexionMySql();
-            object respuesta = cn.ConsultarTabla("*","usuario", "usuario = '"+usuario + "' AND contrasenia =' "+contrasenia+ "' AND activo = 1 AND habilitado =1 ");
+            List<Inventario> lista = new List<Inventario>();
 
-            if(respuesta != null)
+
+            cn = ConexionMySql.getInstance();
+            DataTable respuesta = (DataTable)cn.ConsultarTabla("*", "view_usuario", "usuario = '" + usuario + "' AND contrasenia ='" + GetMD5(contrasenia) + "'");
+
+  
+
+            //existe usuario
+            if(respuesta.Rows.Count > 0)
+            {
                 return true;
-            
+               
+            }
+
+
             return false;
 
 
@@ -61,7 +78,7 @@ namespace wsServidor
             var json = "";
 
 
-            cn = new ConexionMySql();
+            cn = ConexionMySql.getInstance();
 
             try
             {
@@ -101,7 +118,7 @@ namespace wsServidor
         {
             List<Inventario> lista = new List<Inventario>();
 
-            cn = new ConexionMySql();
+            cn = ConexionMySql.getInstance();
 
             try
             {
@@ -126,6 +143,17 @@ namespace wsServidor
             }
 
            return lista.ToArray();
+        }
+
+        public static string GetMD5(string str)
+        {
+            MD5 md5 = MD5CryptoServiceProvider.Create();
+            ASCIIEncoding encoding = new ASCIIEncoding();
+            byte[] stream = null;
+            StringBuilder sb = new StringBuilder();
+            stream = md5.ComputeHash(encoding.GetBytes(str));
+            for(int i = 0; i < stream.Length; i++) sb.AppendFormat("{0:x2}", stream[i]);
+            return sb.ToString();
         }
 
     }//fin clase
