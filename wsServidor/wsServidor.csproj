@@ -76,7 +76,10 @@
   <ItemGroup>
     <Compile Include="DAO\UsuarioDao.cs" />
     <Compile Include="Helper\ConexionMysql.cs" />
+    <Compile Include="Models\Activo.cs" />
     <Compile Include="Models\Inventario.cs" />
+    <Compile Include="Models\TipoActivo.cs" />
+    <Compile Include="Models\Ubicacion.cs" />
     <Compile Include="Models\Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Helper\Util.cs" />

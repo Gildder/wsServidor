@@ -5,6 +5,8 @@ using System.Web;
 using MySql.Data;
 using MySql.Data.MySqlClient;
 using System.Data;
+using System.Drawing;
+using System.IO;
 
 namespace wsServidor.Helper
 {
@@ -222,7 +224,19 @@ namespace wsServidor.Helper
         }
 
 
-       
+        public byte[] GetActivoImage(string condicion)
+        {
+
+            string sql = "SELECT imagen FROM activo WHERE id = " + condicion;
+            connection.Open();
+            command = new MySqlCommand(sql, connection);
+            byte[] resultado = (byte[]) command.ExecuteScalar();
+            connection.Close();
+
+            return resultado;
+
+
+        }
 
         #endregion
 

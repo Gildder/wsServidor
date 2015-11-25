@@ -11,13 +11,13 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
   </PropertyGroup>
   <ItemGroup>
     <File Include="bin/wsServidor.dll">
-      <publishTime>10/30/2015 14:40:30</publishTime>
+      <publishTime>11/16/2015 18:10:39</publishTime>
     </File>
     <File Include="bin/wsServidor.pdb">
-      <publishTime>10/30/2015 14:40:29</publishTime>
+      <publishTime>11/16/2015 18:10:38</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>10/30/2015 14:40:38</publishTime>
+      <publishTime>11/16/2015 18:10:51</publishTime>
     </File>
     <File Include="WebService.asmx">
       <publishTime>08/10/2015 14:11:52</publishTime>
